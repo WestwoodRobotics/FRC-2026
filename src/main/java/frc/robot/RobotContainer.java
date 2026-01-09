@@ -64,6 +64,8 @@ public class RobotContainer {
             limelight.setDefaultCommand(new LimelightDefaultCommand(limelight, drivetrain));
         } catch(Exception exc){
             limelight = null;
+            SmartDashboard.putString("Limelight Status", "Initialization failed: " + exc.getMessage());
+            exc.printStackTrace();
         }
         // Warmup PathPlanner to avoid Java pauses
         FollowPathCommand.warmupCommand().schedule();
