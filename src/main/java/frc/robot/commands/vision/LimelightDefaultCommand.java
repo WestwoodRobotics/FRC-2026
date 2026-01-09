@@ -368,15 +368,15 @@ public class LimelightDefaultCommand extends Command{
         double basexyStdDev = LimelightConstants.kXyStdDev;
         double basethetaStdDev = LimelightConstants.kThetaStdDev;
 
-        double areafactor = 1.0 - (0.9 * Math.min(totalArea, 1.0));
+        double areaFactor = 1.0 - (0.9 * Math.min(totalArea, 1.0));
 
         double transVelFactor = 0.3 + (1.5 * (translationalVelocity / LimelightConstants.kMaxTranslationalVelocity));
 
         double rotVelFactor = 0.3 + (1.5 * (rotationalVelocity / LimelightConstants.kMaxRotationalVelocity));
 
 
-        double xyStdDev = basexyStdDev * areafactor * transVelFactor;
-        double thetaStdDev = basethetaStdDev * areafactor * rotVelFactor;
+        double xyStdDev = basexyStdDev * areaFactor * transVelFactor;
+        double thetaStdDev = basethetaStdDev * areaFactor * rotVelFactor;
 
         SmartDashboard.putNumber("Vision XY std", xyStdDev);
         SmartDashboard.putNumber("Vision Theta std", thetaStdDev);
