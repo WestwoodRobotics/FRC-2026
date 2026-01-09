@@ -49,10 +49,13 @@ public class RobotContainer {
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
 
-    public LED led = new LED(50, "SwerveCAN");
+    private final LED led = new LED(50, "SwerveCAN");
 
     private Limelight limelight;
 
+    public LED getLed() {
+        return led;
+    }
     public RobotContainer() {
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
