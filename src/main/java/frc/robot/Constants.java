@@ -66,7 +66,7 @@ public final class Constants {
             kThetaOdomStdDevDisabled);
         
 
-        public static final double kMaxAccelerationMetersPerSecondSquared = Units.inchesToMeters(500);;
+        public static final double kMaxAccelerationMetersPerSecondSquared = Units.inchesToMeters(500);
         //public static final double kMaxAngularAccelerationRadiansPerSecondSquared = 2;
     }
 
