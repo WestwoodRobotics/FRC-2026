@@ -87,7 +87,7 @@ public class Limelight extends SubsystemBase{
         return layout;
     }
 
-    public int getNumTag() {
+    public int getNumTags() {
         return tags;
     }
    
