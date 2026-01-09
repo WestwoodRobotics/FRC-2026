@@ -18,7 +18,7 @@ public class LED extends SubsystemBase{
     }
 
     private Mode mode = Mode.CAMERA;
-    public CANdle candle;
+    private CANdle candle;
     public LED(int deviceID, String canBus){
         candle = new CANdle(deviceID, canBus);
 
