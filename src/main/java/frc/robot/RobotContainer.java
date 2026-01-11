@@ -21,11 +21,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.vision.AutoAlign;
-import frc.robot.commands.vision.LimelightDefaultCommand;
+import frc.robot.commands.vision.PhotonDefaultCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.LED;
-import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.PhotonVision;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -51,8 +51,8 @@ public class RobotContainer {
 
     private final LED led = new LED(50, "SwerveCAN");
 
-    private Limelight limelight;
-
+    private PhotonVision vision;
+    
     public LED getLed() {
         return led;
     }
@@ -63,10 +63,10 @@ public class RobotContainer {
         configureBindings();
 
         try{
-            limelight = new Limelight(led);
-            limelight.setDefaultCommand(new LimelightDefaultCommand(limelight, drivetrain));
+            vision = new PhotonVision(led);
+            vision.setDefaultCommand(new PhotonDefaultCommand(vision, drivetrain));
         } catch(Exception exc){
-            limelight = null;
+            vision = null;
             SmartDashboard.putString("Limelight Status", "Initialization failed: " + exc.getMessage());
             exc.printStackTrace();
         }
@@ -112,13 +112,7 @@ public class RobotContainer {
         joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-        joystick.y().whileTrue(
-        new InstantCommand(() -> {
-            var endPose = limelight.getCamOneResult().pose; // returns null if no target
-            if (endPose != null) {
-                new AutoAlign(drivetrain, endPose).schedule();
-            }
-        }));
+    
         // reset the field-centric heading on left bumper press
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
