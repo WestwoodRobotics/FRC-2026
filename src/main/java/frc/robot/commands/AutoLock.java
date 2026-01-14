@@ -10,8 +10,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.TrajectoryConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import pabeles.concurrency.IntOperatorTask.Max;
@@ -19,20 +21,18 @@ import pabeles.concurrency.IntOperatorTask.Max;
 public class AutoLock extends Command{
     private final CommandSwerveDrivetrain drivetrain;
     private final SwerveRequest.FieldCentricFacingAngle faceCenter;
-    private final DoubleSupplier orbitDoubleSupplier;
-    private final DoubleSupplier radiusDoubleSupplier;
+    private final CommandXboxController joystick;
     private double MaxAngularRate;
     private double MaxSpeed;
     private Optional<Alliance> ally = DriverStation.getAlliance();
     double dx;
     double dy;
 
-    public AutoLock(CommandSwerveDrivetrain drivetrain, SwerveRequest.FieldCentricFacingAngle faceCenter, DoubleSupplier orbitDoubleSupplier, DoubleSupplier radiusDoubleSupplier, double maxAngleRate, double maxSpeed){
+    public AutoLock(CommandSwerveDrivetrain drivetrain, SwerveRequest.FieldCentricFacingAngle faceCenter, CommandXboxController joystick, double maxAngleRate, double maxSpeed){
         this.drivetrain = drivetrain;
         this.faceCenter = faceCenter;
-        this.orbitDoubleSupplier = orbitDoubleSupplier;
-        this.radiusDoubleSupplier = radiusDoubleSupplier;
         this.MaxAngularRate = maxAngleRate;
+        this.joystick = joystick;
         this.MaxSpeed = maxSpeed;
         addRequirements(drivetrain);
     }
@@ -57,33 +57,17 @@ public class AutoLock extends Command{
 
     
             Rotation2d targetAngle = new Rotation2d(Math.atan2(dy, dx) + Math.PI);
-            double radius = Math.hypot(dx, dy);
             
-            double input = orbitDoubleSupplier.getAsDouble();
-            double radiusinput = radiusDoubleSupplier.getAsDouble();
+            double magnitude = Math.sqrt(
+                        Math.pow(joystick.getLeftX(), 2) 
+                        + Math.pow(joystick.getLeftY(), 2)
+                    );
+                    
+            double angle = Math.atan2(joystick.getLeftY(), joystick.getLeftX()); 
+            double vx = Math.pow(magnitude,2) * Math.cos(angle);
+            double vy = Math.pow(magnitude,2) * Math.sin(angle);
 
-            double tangentUx = -dy / radius;
-            double tangentUy = dx / radius; 
-
-            double radiusUx = dx / radius;
-            double radiusUy = dy / radius;
-            
-            double angularRate = MaxAngularRate * input;
-            double tangentialSpeed = angularRate * radius;
-            
-
-            double radiusSpeed = radiusinput * MaxSpeed;
-        
-            double vx = tangentUx*tangentialSpeed + radiusUx*radiusSpeed;
-            double vy = tangentUy*tangentialSpeed + radiusUy*radiusSpeed;
-            double speed = Math.hypot(vx, vy);
-
-            if(speed > MaxSpeed){
-                double scale = MaxSpeed / speed;
-                vx *= scale;
-                vy *= scale;
-            }
-
+           
             SmartDashboard.putNumber("Target angle degrees", targetAngle.getDegrees());
             SmartDashboard.putNumber("Angle error degrees", targetAngle.minus(currentPose.getRotation()).getDegrees());
             if(ally.get() == Alliance.Red && currentPose.getX() < TrajectoryConstants.kRedHub.getX()
