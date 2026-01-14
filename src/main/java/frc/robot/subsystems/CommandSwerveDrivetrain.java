@@ -280,8 +280,18 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
          if (DriverStation.isDisabled()) {
             setStateStdDevs(TrajectoryConstants.kOdomStdDevsDisabled);
         } else {
-            setStateStdDevs(TrajectoryConstants.kOdomStdDevsEnabled);
+
+            if(getPigeon2().getPitch().getValueAsDouble() > TrajectoryConstants.PitchThreshold){
+
+                setStateStdDevs(TrajectoryConstants.kOdomStdDevsBump);
+
+            } else{
+
+                setStateStdDevs(TrajectoryConstants.kOdomStdDevsEnabled);
+                
+            }
         }
+
     }
 
     private void startSimThread() {

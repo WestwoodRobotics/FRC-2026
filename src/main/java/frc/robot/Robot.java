@@ -60,14 +60,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
-    if(m_robotContainer.drivetrain.getPigeon2().getPitch().getValueAsDouble() > TrajectoryConstants.PitchThreshold){
-
-      m_robotContainer.drivetrain.setStateStdDevs(TrajectoryConstants.kOdomStdDevsBump);
-
-    } else{
-      m_robotContainer.drivetrain.setStateStdDevs(TrajectoryConstants.kOdomStdDevsEnabled);
-
-    }
+    
   }
 
   @Override
