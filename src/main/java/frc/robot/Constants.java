@@ -75,7 +75,7 @@ public final class Constants {
 
         public static final double kMaxAccelerationMetersPerSecondSquared = Units.inchesToMeters(500);
 
-        public static final double PitchThreshold = 30; //degrees
+        public static final double PitchRollThreshold = 10; //degrees
         
         public static final double kXyOdomStdDevBump= 0.8;
         public static final double kThetaOdomStdDevBump = 0.75;

@@ -281,7 +281,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             setStateStdDevs(TrajectoryConstants.kOdomStdDevsDisabled);
         } else {
 
-            if(getPigeon2().getPitch().getValueAsDouble() > TrajectoryConstants.PitchThreshold){
+            if(getPigeon2().getPitch().getValueAsDouble() > TrajectoryConstants.PitchRollThreshold
+                || getPigeon2().getRoll().getValueAsDouble() > TrajectoryConstants.PitchRollThreshold){
 
                 setStateStdDevs(TrajectoryConstants.kOdomStdDevsBump);
 
