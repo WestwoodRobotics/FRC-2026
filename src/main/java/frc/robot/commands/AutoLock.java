@@ -62,7 +62,7 @@ public class AutoLock extends Command{
                         Math.pow(joystick.getLeftX(), 2) 
                         + Math.pow(joystick.getLeftY(), 2)
                     );
-                    
+
             double angle = Math.atan2(joystick.getLeftY(), joystick.getLeftX()); 
             double vx = Math.pow(magnitude,2) * Math.cos(angle);
             double vy = Math.pow(magnitude,2) * Math.sin(angle);
@@ -74,8 +74,8 @@ public class AutoLock extends Command{
              || ally.get() == Alliance.Blue && currentPose.getX() > TrajectoryConstants.kBlueHub.getX()){
             drivetrain.setControl(faceCenter
             .withTargetDirection(targetAngle)
-            .withVelocityX(vx)
-            .withVelocityY(vy)
+            .withVelocityX(-vx * MaxSpeed)
+            .withVelocityY(-vy * MaxSpeed)
             );
             }
         }

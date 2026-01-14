@@ -56,13 +56,16 @@ public final class Constants {
         public static final double kXyOdomStdDevEnabled = 0.2;
         public static final double kThetaOdomStdDevEnabled = 0.15;
 
-        public static final double kXyOdomStdDevDisabled = 1.0;
-        public static final double kThetaOdomStdDevDisabled = 1.0;
+        
 
         public static final Matrix<N3, N1> kOdomStdDevsEnabled = VecBuilder.fill(
             kXyOdomStdDevEnabled,
             kXyOdomStdDevEnabled,
             kThetaOdomStdDevEnabled);
+
+            
+        public static final double kXyOdomStdDevDisabled = 1.0;
+        public static final double kThetaOdomStdDevDisabled = 1.0;
 
         public static final Matrix<N3, N1> kOdomStdDevsDisabled = VecBuilder.fill(
             kXyOdomStdDevDisabled,
@@ -70,7 +73,17 @@ public final class Constants {
             kThetaOdomStdDevDisabled);
         
 
-        public static final double kMaxAccelerationMetersPerSecondSquared = Units.inchesToMeters(500);;
+        public static final double kMaxAccelerationMetersPerSecondSquared = Units.inchesToMeters(500);
+
+        public static final double PitchThreshold = 30; //degrees
+        
+        public static final double kXyOdomStdDevBump= 0.8;
+        public static final double kThetaOdomStdDevBump = 0.75;
+
+        public static final Matrix<N3, N1> kOdomStdDevsBump = VecBuilder.fill(
+            kXyOdomStdDevBump,
+            kXyOdomStdDevBump,
+            kThetaOdomStdDevBump);
         //public static final double kMaxAngularAccelerationRadiansPerSecondSquared = 2;
     }
 
