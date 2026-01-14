@@ -68,13 +68,11 @@ public class PhotonDefaultCommand extends Command{
         PhotonPipelineResult PVresultTwo = vision.getCamTwoResult();
         PhotonPipelineResult PVresultThree = vision.getCamThreeResult();
         PhotonPipelineResult PVresultFour = vision.getCamFourResult();
-        PhotonPipelineResult PVresultFive = vision.getCamFiveResult();
 
         boolean hasTargetsOne = PVresult != null && PVresult.hasTargets();
         boolean hasTargetsTwo = PVresultTwo != null && PVresultTwo.hasTargets();
         boolean hasTargetsThree = PVresultThree != null && PVresultThree.hasTargets();
         boolean hasTargetsFour = PVresultFour != null && PVresultFour.hasTargets();
-        boolean hasTargetsFive = PVresultFive != null && PVresultFive.hasTargets();
 
         SmartDashboard.putBoolean("pv one target", hasTargetsOne);
         SmartDashboard.putBoolean("pv two target", hasTargetsTwo);
@@ -98,11 +96,8 @@ public class PhotonDefaultCommand extends Command{
         if (PVresultFour != null && hasTargetsFour) {
             processSingleCam(PVresultFour, cameraToRobotFour);
         }
-        if (PVresultFive != null && hasTargetsFive) {
-            processSingleCam(PVresultFive, cameraToRobotFive);
-        }
 
-        logDetectedTags(PVresult, PVresultTwo, PVresultThree, PVresultFour, PVresultFive);
+        logDetectedTags(PVresult, PVresultTwo, PVresultThree, PVresultFour);
 
 
     }
@@ -176,8 +171,7 @@ public class PhotonDefaultCommand extends Command{
     private void logDetectedTags(PhotonPipelineResult resultOne, 
                                   PhotonPipelineResult resultTwo,
                                   PhotonPipelineResult resultThree,
-                                  PhotonPipelineResult resultFour,
-                                  PhotonPipelineResult resultFive) {
+                                  PhotonPipelineResult resultFour) {
         int totalTags = 0;
         
         if (resultOne != null && resultOne.hasTargets()) {
@@ -189,9 +183,7 @@ public class PhotonDefaultCommand extends Command{
         if (resultFour != null && resultFour.hasTargets()) {
             totalTags += resultFour.getTargets().size();
         }
-        if (resultFive != null && resultFive.hasTargets()) {
-            totalTags += resultFive.getTargets().size();
-        }
+      
         
         if (totalTags == 0) {
             visionTargetsLog.append(new Pose3d[0]);
@@ -206,7 +198,6 @@ public class PhotonDefaultCommand extends Command{
         addCamTags(resultTwo, tagPoses);
         addCamTags(resultThree, tagPoses);
         addCamTags(resultFour, tagPoses);
-        addCamTags(resultFive, tagPoses);
         
         Pose3d[] poseArray = tagPoses.toArray(new Pose3d[0]);
 

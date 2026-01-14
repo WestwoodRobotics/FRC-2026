@@ -102,13 +102,11 @@ public class PhotonVision extends SubsystemBase{
         PVresultTwo = cameraTwo.getLatestResult();
         PVresultThree = cameraThree.getLatestResult();
         PVresultFour = cameraFour.getLatestResult();
-        PVresultFive = cameraFive.getLatestResult();
 
         SmartDashboard.putBoolean("targets one", PVresult.hasTargets());
         SmartDashboard.putBoolean("targets two", PVresultTwo.hasTargets());
 
-        tags = PVresult.getTargets().size() + PVresultTwo.getTargets().size() + PVresultThree.getTargets().size() + PVresultFour.getTargets().size() + PVresultFive.getTargets().size();
-
+        tags = PVresult.getTargets().size() + PVresultTwo.getTargets().size() + PVresultThree.getTargets().size() + PVresultFour.getTargets().size();
         SmartDashboard.putNumber("tag count", tags);
 
         if (hasValidTarget()){
