@@ -25,10 +25,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
+import frc.robot.Constants.TrajectoryConstants;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 
 /**
@@ -54,6 +55,17 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
     private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
+
+    public enum state{
+        BUMPED,
+        GOOD
+    }
+
+    private state mode = state.GOOD;
+
+    public void setBumpMode(state m){
+        this.mode = m;
+    }   
 
     /* SysId routine for characterizing translation. This is used to find PID gains for the drive motors. */
     private final SysIdRoutine m_sysIdRoutineTranslation = new SysIdRoutine(
@@ -276,7 +288,32 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
             });
         }
+
+        if (DriverStation.isDisabled()) {
+            setStateStdDevs(TrajectoryConstants.kOdomStdDevsDisabled);
+        } else {
+
+            if(getPigeon2().getPitch().getValueAsDouble() > TrajectoryConstants.PitchRollThreshold
+                || getPigeon2().getRoll().getValueAsDouble() > TrajectoryConstants.PitchRollThreshold){
+                
+                setStateStdDevs(TrajectoryConstants.kOdomStdDevsBump);
+                
+                SmartDashboard.putBoolean("Bump Detected", true);
+                setBumpMode(state.BUMPED);
+                SmartDashboard.putNumber("pitch", getPigeon2().getPitch().getValueAsDouble());
+                SmartDashboard.putNumber("roll", getPigeon2().getRoll().getValueAsDouble());
+                SmartDashboard.putNumber("z axis", getPigeon2().getAccumGyroZ().getValueAsDouble());
+            } else{
+
+                setStateStdDevs(TrajectoryConstants.kOdomStdDevsEnabled);
+                SmartDashboard.putBoolean("Bump Detected", false);
+                SmartDashboard.putNumber("pitch", getPigeon2().getPitch().getValueAsDouble());
+                SmartDashboard.putNumber("roll", getPigeon2().getRoll().getValueAsDouble());
+                SmartDashboard.putNumber("z axis", getPigeon2().getAccumGyroZ().getValueAsDouble());
+            }
+        }
     }
+
 
     private void startSimThread() {
         m_lastSimTime = Utils.getCurrentTimeSeconds();

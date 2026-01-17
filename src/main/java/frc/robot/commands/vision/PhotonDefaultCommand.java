@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.PhotonVision;
+import frc.robot.subsystems.CommandSwerveDrivetrain.state;
 
 public class PhotonDefaultCommand extends Command{
     private final PhotonVision vision;
@@ -86,15 +87,21 @@ public class PhotonDefaultCommand extends Command{
 
         if (PVresult != null && hasTargetsOne) {
             processSingleCam(PVresult, cameraToRobotOne);
+            drivetrain.setBumpMode(state.GOOD);
         }
         if (PVresultTwo != null && hasTargetsTwo) {
             processSingleCam(PVresultTwo, cameraToRobotTwo);
+            drivetrain.setBumpMode(state.GOOD);
+
         }
         if (PVresultThree != null && hasTargetsThree) {
             processSingleCam(PVresultThree, cameraToRobotThree);
+            drivetrain.setBumpMode(state.GOOD);
+
         }
         if (PVresultFour != null && hasTargetsFour) {
             processSingleCam(PVresultFour, cameraToRobotFour);
+            drivetrain.setBumpMode(state.GOOD);
         }
 
         logDetectedTags(PVresult, PVresultTwo, PVresultThree, PVresultFour);

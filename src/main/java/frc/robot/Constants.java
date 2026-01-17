@@ -68,6 +68,17 @@ public final class Constants {
 
         public static final double kMaxAccelerationMetersPerSecondSquared = Units.inchesToMeters(500);
         //public static final double kMaxAngularAccelerationRadiansPerSecondSquared = 2;
+
+        public static final double PitchRollThreshold = 5; //degrees
+
+
+        public static final double kXyOdomStdDevBump= 0.8;
+        public static final double kThetaOdomStdDevBump = 0.75;
+
+        public static final Matrix<N3, N1> kOdomStdDevsBump = VecBuilder.fill(
+            kXyOdomStdDevBump,
+            kXyOdomStdDevBump,
+            kThetaOdomStdDevBump);
     }
 
     
